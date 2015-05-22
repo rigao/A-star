@@ -6,14 +6,17 @@
 	</head>
 	<body>
 		<div class="main">
-			<div class="top v_m">
+			<div class="top mb15 v_m">
 				<label>格子个数：<input type="text" id="td_count" name="td_count" value="20"></label><a href="javascript:resetTd();">设置</a>
-				<span id="notic-container" style="color:red"></span>
+				<span id="notic-container" style="color:red">请选择出发位置</span>
 			</div>
 			<div class="table-contain">
 				<table>
 					<tbody id="tbody"></tbody>
 				</table>
+			</div>
+			<div class="op mt15">
+				<span id="begin" class="btn">开始</a>
 			</div>
 		</div>
 		<script type="text/javascript" src="js/lib/require.js"></script>

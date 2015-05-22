@@ -9,8 +9,16 @@ define(function(require, exports, module) {
 	
 	var $ = require("lib/select");
 	var scene = require("general/scene");
+	var addEvent = require("lib/addEvent");
+
+	function init(){
+
+		addEvent($("begin"),"click", Game.start());
+
+	}
+
 	var Game = {
-		start : function(){
+		init : function(){
 			scene.buildDom();
 		}
 	};

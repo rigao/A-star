@@ -8,7 +8,7 @@ define("general/go", function(require, exports, module) {
 	"use strict";
 	
 	var game = require("general/game"); 
-	game.start();
+	game.init();
 });
 
 require(["general/go"]);

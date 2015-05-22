@@ -10,6 +10,7 @@ define(function(require, exports, module) {
 	var $ = require("lib/select");
 	var addEvent = require("lib/addEvent");
 	var notic = require("lib/notic");
+	var point = require("general/point");
 
 	var scene = {
 		getTdNum : function(){
@@ -28,12 +29,11 @@ define(function(require, exports, module) {
 				trs += '<tr>'+tds+'</tr>';
 			}
 			if($("tbody").innerHTML = trs){
+
 				var items = document.getElementsByTagName("td");
-				notic("请选择出发位置");
+
 				for(var i=0; i<items.length; i++){
-					addEvent(items[i],"click", function(e){
-						console.log(e);
-					});
+					addEvent(items[i],"click", point.add);
 				}
 			}
 		},
