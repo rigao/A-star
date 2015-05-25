@@ -38,6 +38,7 @@ define(function(require, exports, module) {
 				} 
 			}
 
+			console.log(gloData.end.id + enabledIdArr);
 			if(fun.inArray(gloData.end.id, enabledIdArr)){
 				//成功找到
 				console.log("yes");

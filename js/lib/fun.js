@@ -9,8 +9,8 @@ define(function(require, exports, module) {
 	
 	module.exports = {
         inArray : function(key, arr){
-        	for(var i=0; i>arr.length; i++){
-        		if(arr[i] === key) return true;
+        	for(var i=0; i<arr.length; i++){
+        		if(arr[i] == key) return true;
         	}
         	return false;
         }
