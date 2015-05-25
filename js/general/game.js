@@ -10,20 +10,21 @@ define(function(require, exports, module) {
 	var $ = require("lib/select");
 	var scene = require("general/scene");
 	var addEvent = require("lib/addEvent");
+	var action = require("general/action");
 
 	function init(){
 
-		addEvent($("begin"),"click", Game.start());
+		addEvent($("begin"),"click", Game.start);
 
 	}
 
 	var Game = {
 		init : function(){
 			scene.buildDom();
-		}
+			init();
+		},
+		start : action.start
 	};
-	
-	
 	
 	module.exports = Game;
 });

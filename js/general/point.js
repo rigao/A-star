@@ -15,14 +15,14 @@ define(function(require, exports, module) {
 	var point = {
 		add : function(e){
 			if(!data.get("start")){
-				data.add("start",e.target);
-				e.target.className = "start";
+				data.setParentEle(e.target);
+				e.target.className = "start disabled";
 				notic("请选择终点");
 				return;
 			}
 
 			if(!data.get('end')){
-				data.add("end",e.target);
+				data.setEndEle(e.target);
 				e.target.className = "end";
 				notic("请选择障碍点");
 				return;
@@ -31,7 +31,7 @@ define(function(require, exports, module) {
 			var obstacles = data.get('obstacles');
 			if(obstacles.length < level.getObstaclesByLevel()){
 				data.obstaclesPush(e.target);
-				e.target.className = 'obstacles';
+				e.target.className = 'obstacles disabled';
 			} else {
 				notic("已超过数量");
 			}

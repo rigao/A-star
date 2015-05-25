@@ -39,7 +39,7 @@ define(function(require, exports, module) {
 		},
 
 		getTdHtml : function(i,j){
-			return '<td id="item_'+(j+1)+'_'+(i+1)+'" title="'+(j+1)+'*'+(i+1)+'" class="normarl">&nbsp;</td>';
+			return '<td id="item_'+(j+1)+'_'+(i+1)+'" title="'+(j+1)+'*'+(i+1)+'" class="normarl">&nbsp;'+(j+1)+'*'+(i+1)+'</td>';
 		}
 	};
 	
