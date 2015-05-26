@@ -11,10 +11,11 @@ define(function(require, exports, module) {
 	var scene = require("general/scene");
 	var addEvent = require("lib/addEvent");
 	var action = require("general/action");
+	var data = require("lib/data")
 
 	function init(){
 
-		addEvent($("begin"),"click", Game.start);
+		addEvent($("#begin"),"click", Game.start);
 
 	}
 

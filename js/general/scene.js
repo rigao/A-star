@@ -14,7 +14,7 @@ define(function(require, exports, module) {
 
 	var scene = {
 		getTdNum : function(){
-			var ele = $("td_count");
+			var ele = $("#td_count");
 			return parseInt(ele.value);
 		},
 
@@ -28,9 +28,9 @@ define(function(require, exports, module) {
 				}
 				trs += '<tr>'+tds+'</tr>';
 			}
-			if($("tbody").innerHTML = trs){
+			if($("#tbody").innerHTML = trs){
 
-				var items = document.getElementsByTagName("td");
+				var items = $("td");
 
 				for(var i=0; i<items.length; i++){
 					addEvent(items[i],"click", point.add);

@@ -7,6 +7,6 @@
 define(function(require, exports, module) {
 	var $ = require("lib/select");
 	module.exports = function(text){
-		$("notic-container").textContent = text;
+		$("#notic-container").textContent = text;
 	};
 });

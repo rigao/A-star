@@ -14,27 +14,27 @@ define(function(require, exports, module) {
 
 	var point = {
 		add : function(e){
-			if(!data.get("start")){
-				data.setParentEle(e.target);
+			var className = e.target.className;
+
+			//
+			if(className.match("obstacles")){
+				data.removeObstaclesEle(e.target);
+				return;
+			}
+			
+			if(!$(".start")){
 				e.target.className = "start disabled";
 				notic("请选择终点");
 				return;
 			}
 
-			if(!data.get('end')){
-				data.setEndEle(e.target);
+			if(!$('.end')){
 				e.target.className = "end";
 				notic("请选择障碍点");
 				return;
 			}
 
-			var obstacles = data.get('obstacles');
-			if(obstacles.length < level.getObstaclesByLevel()){
-				data.obstaclesPush(e.target);
-				e.target.className = 'obstacles disabled';
-			} else {
-				notic("已超过数量");
-			}
+			e.target.className = 'obstacles disabled';
 		}
 	};
 	
