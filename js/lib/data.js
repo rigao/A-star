@@ -27,6 +27,18 @@ define(function(require, exports, module) {
 			this.closePush(gloData.start);
 		},
 
+		//获取当前格
+		getParentEle : function(){
+			var elesArr = this.getEnabledElesArr();
+			if(elesArr.length){
+				elesArr.sort(function(a,b){ return a.f - b.f});
+				return elesArr[0];
+			} else {
+				gloData.start.f = 0; gloData.start.g = 0; gloData.start.h = 0;
+				return gloData.start;
+			}
+		},
+
 		set : function(key, val){
 			gloData[key] = val;
 		},
