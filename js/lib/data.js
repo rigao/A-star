@@ -30,9 +30,10 @@ define(function(require, exports, module) {
 		//获取当前格
 		getParentEle : function(){
 			var elesArr = this.getEnabledElesArr();
-			if(elesArr.length){
-				elesArr.sort(function(a,b){ return a.f - b.f});
-				return elesArr[0];
+			if(elesArr.length && gloData.parentEle){
+				return gloData.parentEle;
+				//elesArr.sort(function(a,b){ return a.f - b.f});
+				//return elesArr[0];
 			} else {
 				gloData.start.f = 0; gloData.start.g = 0; gloData.start.h = 0;
 				return gloData.start;
@@ -86,6 +87,10 @@ define(function(require, exports, module) {
 					: false;
 		},
 		pushItem : function(key, obj){
+			if(obj.id == "undefined"){
+				console.log(key);
+				console.log(obj);
+			}
 			gloData[key][obj.id] = obj;
 			gloData[key].length && gloData[key].length++;
 		},
@@ -107,8 +112,8 @@ define(function(require, exports, module) {
 
 		removeObstaclesEle : function(obj){
 			obj.className = "normarl";
-			gloData.obstacles.length--;
-			gloData.close.length--;
+			//gloData.obstacles.length--;
+			//gloData.close.length--;
 			delete gloData.obstacles[obj.id];
 			delete gloData.close[obj.id];
 		},

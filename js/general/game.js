@@ -16,7 +16,7 @@ define(function(require, exports, module) {
 	function init(){
 
 		addEvent($("#begin"),"click", Game.start);
-
+		addEvent($("#continue"), "click", action.getPath);
 	}
 
 	var Game = {

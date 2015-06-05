@@ -23,10 +23,13 @@ define(function(require, exports, module) {
 		},
 
 		getPath : function(){
+			/*console.log(1);
+			return false;*/
 			var parentEle = data.getParentEle();
 				data.pushItem("close",parentEle);
+				//console.log(gloData.close);
 				data.removeSubEle("enabledEles",parentEle);
-			var pXY = this.getXY(parentEle);
+			var pXY = action.getXY(parentEle);
 			var itemId,itemObj,nextEle,crFGH,crEnableArr = [], preG;
 			for(var x=pXY.x-1; x<= pXY.x+1; x++){
 				for(var y = pXY.y-1; y <= pXY.y + 1; y++){
@@ -35,46 +38,43 @@ define(function(require, exports, module) {
 
 					//成功找到
 					if(itemObj && itemObj.id == data.get("end").id){
-						this.success();
+						//this.success();
 						return false;
 					}
 
 					if(itemObj && !gloData.close[itemId]){
 						if(data.inObj("enabledEles", itemObj)){ //已在开启集中
-							crFGH = this.getFValue(parentEle, itemObj);
+							crFGH = action.getFValue(parentEle, itemObj);
 							if(itemObj.g < crFGH.g){
 								crEnableArr.push(itemObj);
 								nextEle = itemObj;
+							} else {
+								data.pushItem("close",itemObj);
 							}
-							//itemObj.innerHTML = itemObj.innerHTML+",G:"+itemObj.g;
 						} else {
-							itemObj = this.setEleFGH(parentEle,itemObj);
+							itemObj = action.setEleFGH(parentEle,itemObj);
 							data.pushItem("enabledEles",itemObj);
 							crEnableArr.push(itemObj);
-							//itemObj.innerHTML = itemObj.innerHTML+",G:"+itemObj.g;
 							nextEle = itemObj;
 						}
 						
 					}
 
-					/*if(!preg){
-						
-					}*/
 				} 
 			}
+			if(!nextEle){
+				console.log("error");
+				console.log(gloData.parentEle);
+				return;
+			}
 			crEnableArr.sort(function(a,b){return a.f-b.f});
-			/*gloData.enabledEles = {};
-			for(var i=0; i<crEnableArr.length; i++){
-				data.pushItem("enabledEles",crEnableArr[i]);
-			}*/
-			console.log(crEnableArr);
 			nextEle = crEnableArr[0];
-			console.log(nextEle);
 			data.pushItem("pathEles", nextEle);
-			//data.pushItem("enabledEles", nextEle);
+			gloData.parentEle = nextEle;
+			nextEle.className = 'path';
 			gloData.i++;
-			if(gloData.i<30)
-			  this.getPath();
+			//if(gloData.i<100)
+			  //this.getPath();
 
 		},
 
