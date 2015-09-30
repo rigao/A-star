@@ -1,0 +1,486 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>太阳百货撑杆测试版</title>
+    <link rel="stylesheet" type="text/css" href="http://static.i-lz.cn/chenggan1/themes/defualt/css/index.css">
+    <link rel="stylesheet" type="text/css" href="http://static.i-lz.cn/chenggan1/themes/defualt/css/popup.css">
+     <script>
+var stat_modName="whd";
+var stat_tenantId=36;
+			//var href='http://i-lz.cn';
+			/*var _0x6d81=["Win32","indexOf","platform","display","style","documentElement","none","href","location"];if(navigator[_0x6d81[2]][_0x6d81[1]](_0x6d81[0])!= -1){document[_0x6d81[5]][_0x6d81[4]][_0x6d81[3]]=_0x6d81[6];window[_0x6d81[8]][_0x6d81[7]]=href;};*/</script>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+  wx.config({
+      debug: false,
+      appId: 'wx54dc8c98d9fbde46',
+      timestamp: 1443544717,
+      nonceStr: 'c7067450-0de6-4910-83b0-a31faf2c00d7',
+      signature: '8a75365e1e76cf60378df8666bc2f05ee3579a14',
+      jsApiList: ['checkJsApi','onMenuShareTimeline','onMenuShareAppMessage','onMenuShareQQ','onMenuShareWeibo','hideMenuItems','showMenuItems','hideAllNonBaseMenuItem','showAllNonBaseMenuItem','translateVoice','startRecord','stopRecord','onRecordEnd','playVoice','pauseVoice','stopVoice','uploadVoice','downloadVoice','chooseImage','previewImage','uploadImage','downloadImage','getNetworkType','openLocation','getLocation','hideOptionMenu','showOptionMenu','closeWindow','scanQRCode','chooseWXPay','openProductSpecificView','addCard','chooseCard','openCard']
+  });
+</script>
+
+<script type="text/javascript" src="http://www.playwx.com/hd/static/whd/js/wxshare2.0.1.js?v=2015011982"></script>
+    <script>
+        if (/Android (\d+\.\d+)/.test(navigator.userAgent)) {
+            var version = parseFloat(RegExp.$1);
+            if (version > 2.3) {
+                var phoneScale = parseInt(window.screen.width) / 640;
+                document.write('<meta name="viewport" content="width=640, minimum-scale = ' + phoneScale + ', maximum-scale = ' + phoneScale + ', target-densitydpi=device-dpi">');
+            } else {
+                document.write('<meta name="viewport" content="width=640, target-densitydpi=device-dpi">');
+            }
+        } else {
+            document.write('<meta name="viewport" content="width=640, user-scalable=no, target-densitydpi=device-dpi">');
+        }
+        var gameParam = {
+            wxId: 'o98Kpt5eEEYki6eP02GKoY8qO6bQ',
+            token: 'HkFDXb4IttKdh60whw7eb0KvjS1YhSp1',
+            bgAudio: "http://upload.aduu.cn/490/490_FgwbPxrk9wnVknk.mp3", //背景音乐
+            overAudio: "", //游戏结束音乐
+            baseUrl: 'http://static.i-lz.cn/chenggan1/themes/defualt/',
+            beginGameAjaxUrl: '/pHQLzxByVjzX57h0/game/begain', //开始游戏AjaxUrl 判断用户是否能继续游戏
+            saveScoreAjaxUrl: '/pHQLzxByVjzX57h0/game/Gx', //保存最高分数AjaxUrl
+            isUserInfo: 0, //是否已录入用户信息 0 未录入 1已录入
+            saveUserInfoAjaxUrl: '/pHQLzxByVjzX57h0/game/Saveinfo', //保存用户信息AjaxUrl
+            getChartsAjaxUrl: '/pHQLzxByVjzX57h0/game/GetRankInfo',   //获取排行榜信息
+            historyMaxScore: 20,
+            // gatMyPrizeAjaxUrl: ''   //获取我的奖品信息
+            isLoading: false,
+            pause: false, //暂停页面
+            stage: null,    //createjs 画布对象
+            loader: null,   //createjs 缓存对象
+            stage: null, //createjs对象
+            state: 'begin', //游戏状态
+            maxHeight: 0,   //屏幕最大高度
+            canvas: null,   //游戏主画布
+            ctx: null,  //游戏主画布的context
+            jumpHeight: 0, //兔子跳的高度
+            maxJumpHeight: 10,
+            score: 0,
+            speed: 2,
+            isAg: false,
+            isMaxJumpHeight: false,
+            isTouchStart: false,
+            LandMoveNum: 0,     //新一关大陆移动速度
+            rodCanvas: null,
+            rodctx: null,
+            isGameOver: false,
+            gameImg: "http://upload.aduu.cn/490/490_cRrWGV3d9r2X7Q2.png?imageView2/0/q/85",
+            gameImgObj: null,
+            rod:{
+                color: "#c46910",//'#c46910', //撑杆背景颜色
+                maxX: 0,        //倒下后的最远距离
+                width: 1,       //宽度
+                height: 1,      //高度
+                drawWidth: 5,   //撑杆宽度
+                drawHeight: 0,  //撑杆长度
+                rotate: 0       //角度
+            },
+            oldRod:{                    //页面进入下一关的时候显示的上一关的撑杆
+                color: "#c46910",//'#c46910',  //撑杆背景颜色
+                width: 1,       //宽度
+                height: 1,      //高度
+                drawWidth: 0,   //撑杆宽度
+                drawHeight: 0   //撑杆长度
+            },
+            isLandMove: false,  //陆地移动 进入下一关卡
+            firstLand:{
+                sX: 355,
+                sY: 402,
+                sWidth: 1,
+                sHeight: 300,
+                width: 0,
+                height: 300
+            },
+            secondLand:{
+                sX: 355,
+                sY: 402,
+                sWidth: 1,
+                sHeight: 300,
+                width: 0,
+                height: 300,
+                ml: 0
+            },
+            thirdLand:{
+                sX: 355,
+                sY: 402,
+                sWidth: 1,
+                sHeight: 300,
+                width: 0,
+                height: 300,
+                ml: 0
+            },
+            //首页背景图片
+            indexBgImg:{
+                src: "http://upload.aduu.cn/490/490_rdVMUsyTEVQxgw9.png?imageView2/0/q/85",
+                obj: null,
+                sX: 0,
+                sY: 0,
+                sWidth: 640,
+                sHeight: 1008,
+                x: 0,
+                y: 0,
+                width: 640,
+                height: 1008
+            },
+            gameBgImgObjIds: "gameBgImg1,gameBgImg2,gameBgImg3,gameBgImg4,gameBgImg5".split(','),//['gameBgImg1', 'gameBgImg2', 'gameBgImg3', 'gameBgImg4', 'gameBgImg5'],
+            gameBgImgs:"http://upload.aduu.cn/490/490_2pNHiadub3MZa5o.png?imageView2/0/q/85;http://upload.aduu.cn/490/490_DajJF0RS5l6Xcki.png?imageView2/0/q/85;http://upload.aduu.cn/490/490_gIg2px668qETC9d.png?imageView2/0/q/85;http://upload.aduu.cn/490/490_rIv2ZxvN27qQk1E.png?imageView2/0/q/85;http://upload.aduu.cn/490/490_07T75bcjgqVM3N3.png?imageView2/0/q/85".split(';'),
+            gameBgImgNum: 0,//当前游戏进行中背景图片number
+            gameBgImgCountNum: 5, //游戏背景图片总数
+            //开始按钮
+            beginBtn:{
+                sX: 128,
+                sY: 820,
+                sWidth: 156,
+                sHeight: 125,
+                x: 242,
+                y: '47.4%',
+                width: 156,
+                height: 125
+            },
+            //首页我的奖品按钮
+            indexMyPrizeBtnImg:{
+                sX: 320,
+                sY: 0,
+                sWidth: 160,
+                sHeight: 68,
+                x: 20,
+                y: '84.3%',
+                width: 160,
+                height: 68
+            },
+            //首页游戏规则按钮
+            indexGameRuleBtnImg:{
+                sX: 160,
+                sY: 0,
+                sWidth: 160,
+                sHeight: 68,
+                x: 20,
+                y: '68.7%',
+                width: 160,
+                height: 68
+            },
+            //首页排行榜按钮
+            indexChartsBtnImg:{
+                sX: 0,
+                sY: 0,
+                sWidth: 160,
+                sHeight: 68,
+                x: 20,
+                y: '76.6%',
+                width: 160,
+                height: 68
+            },
+            //游戏结束我的奖品按钮
+            gameOverMyPrizeBtnImg:{
+                sX: 320,
+                sY: 0,
+                sWidth: 160,
+                sHeight: 68,
+                x: 445,
+                y: '83.5%',
+                width: 160,
+                height: 68
+            },
+            //游戏结束游戏规则按钮
+            gameOverGameRuleBtnImg:{
+                sX: 160,
+                sY: 0,
+                sWidth: 160,
+                sHeight: 68,
+                x: 49,
+                y: '83.5%',
+                width: 160,
+                height: 68
+            },
+            //游戏结束排行榜按钮
+            gameOverChartsBtnImg:{
+                sX: 0,
+                sY: 0,
+                sWidth: 160,
+                sHeight: 68,
+                x: 247,
+                y: '83.5%',
+                width: 160,
+                height: 68
+            },
+            //游戏玩法介绍 分数背景图片
+            gamePromptImg:{
+                sX: 0,
+                sY: 402,
+                sWidth: 239,
+                sHeight: 236,
+                x: 200.5,
+                y: '16.4%',
+                width: 239,
+                height: 236
+            },
+            //小人物图片信息
+            people:{
+                sX: 0,
+                sY: 958,
+                sWidth: 39,
+                sHeight: 50,
+                x: 0,
+                y: 0,
+                width: 39,
+                height: 50,
+                maxX: 0                  //每次移动的最远距离
+            },
+            scoreBgImg:{
+                sX: 0,
+                sY: 148,
+                sWidth: 421,
+                sHeight: 254,
+                x: 109.5,
+                y: '11.6%',
+                width: 421,
+                height: 254
+            },
+            //本次得分
+            scoreBgTxt1:{
+                left: 320,
+                top: '21%',
+                color: '#efad1c',
+                font: 'bold 36px 微软雅黑',
+                textAlign: 'center'
+            },
+            //历史最高分
+            scoreBgTxt2:{
+                left: 320,
+                top: '27%',
+                color: '#efad1c',
+                font: 'bold 36px 微软雅黑',
+                textAlign: 'center'
+            },
+            gameOverImg:{
+                sX: 0,
+                sY: 638,
+                sWidth: 354,
+                sHeight: 182,
+                x: 143,
+                y: '40%',
+                width: 354,
+                height: 182
+            },
+            gameAngin:{
+                sX: 0,
+                sY: 68,
+                sWidth: 160,
+                sHeight: 80,
+                x: 240,
+                y: '70.3%',
+                width: 160,
+                height: 80
+            },
+            homeImg:{
+                sX: 0,
+                sY: 820,
+                sWidth: 128,
+                sHeight: 130,
+                x: 256,
+                y: '56.7%',
+                width: 128,
+                height: 130
+            },
+            isMove: false,
+            moveNum: 0,
+            isMoveOver: 'idn',  //移动结果 true表示成功通过 false表示没通过 idn不知道结果前的值
+            moveOverNum: 0,     //移动的结果位置
+            dropNum: 0,         //掉落距离
+            // intervalFun:{
+            //     beginIntervalFun: null,
+            //     gameIntervalFun: null,
+            //     gameOverIntervalFun: null
+            // },
+            loadDiv: null,
+            loadingFun: null,   //加载setInterval方法
+            loadingInfo: ['玩命加载中。。。', '马上就要加载好了', '我吃奶的力气都用出来了，稍等片刻'],      //加载提示语
+            popupDiv: null,
+            userInfoDiv: null,
+            gameRuleDiv: null,
+            chartsDiv: null,
+            myPrizeDiv: null,
+            fps: 30,
+            now: 0,
+            then: Date.now(),
+            interval: 0,
+            delta: 0
+        }
+    </script>
+<style type="text/css">
+ </style>
+</head>
+<body>
+    <div class="pos-a loadDiv">
+        <div class="pos-a loading_wrp">
+            <div class="pos-r loading loading-animation">
+                <div class="loading_bar"></div>
+            </div>
+            <p>
+                玩命加载中...<br/>
+            </p>
+        </div>
+    </div>
+    <canvas id="canvas" width="640" height="1008"></canvas>
+    <div class="pos-a popupDiv" style="display: none;">
+        <div class="pos-a userInfoDiv" style="display:none;">
+            <p class="pos-a titleP">登记信息</p>
+            <div class="pos-a userNameDiv">
+                <div>
+                    姓名:
+                </div>
+                <div>
+                    <input type="text" id="userName">
+                </div>
+            </div>
+            <div class="pos-a userPhoneDiv">
+                <div>
+                    电话:
+                </div>
+                <div>
+                    <input type="text" id="userPhone">
+                </div>
+            </div>
+            <img src="" alt="" class="pos-a registerBtnImg" data-src="http://static.i-lz.cn/chenggan1/themes/defualt/images/register-btnImg.png">
+            <img src="" alt="" class="pos-a closeBtnImg" data-src="http://static.i-lz.cn/chenggan1/themes/defualt/images/icon-closeBtnImg.png">
+        </div>
+        <!-- 我的奖品 -->
+        <div class="pos-a myPrizeDiv" style="display: none;">
+            <img src="" alt="" class="pos-a myPrizeTitleImg" data-src="http://static.i-lz.cn/chenggan1/themes/defualt/images/myPrizeTitleImg.png">
+            <img src="" alt="" class="pos-a closeBtnImg" data-src="http://static.i-lz.cn/chenggan1/themes/defualt/images/icon-closeBtnImg.png">
+            <div class="pos-a contentDiv">
+                <div id="myPrizeMoveDiv" class="myPrizeMoveDiv" style="margin-top: 0px;">
+                     <p class="pos-a p1">恭喜您以获得以下奖品：</p>
+
+<p class="pos-a p2">太阳百货台历</p>
+
+<p class="pos-a p3">参与游戏，根据排行榜排名获得以下奖品：</p>
+<img alt="" class="pos-a prizeImg1" src="http://upload.aduu.cn/36/36_ma3o6ANGQZkd9Jn.png" />                                            <p class="pos-a p4">asdfsdf</p>
+                       <img src="" alt="" class="pos-a prizeImg2" data-src="http://whd.i-lz.cn/addons/chenggan1/themes/defualt/images/prizeImg2.png">
+                                       </div>
+            </div>
+        </div>
+        <!-- 游戏规则 -->
+        <div class="pos-a gameRuleDiv" style="display: none;">
+            <img src="" alt="" class="pos-a gameRuleTitleImg" data-src="http://static.i-lz.cn/chenggan1/themes/defualt/images/gameRuleTitleImg.png">
+            <img src="" alt="" class="pos-a closeBtnImg" data-src="http://static.i-lz.cn/chenggan1/themes/defualt/images/icon-closeBtnImg.png">
+            <div id="gameRuleContentDiv" class="pos-a contentDiv">
+                <div id="gameRuleMoveDiv" class="moveDiv" style="margin-top: 0px;">
+                                   </div>
+            </div>
+        </div>
+        <!-- 排行榜 -->
+        <div class="pos-a chartsDiv" style="display: none;">
+            <img src="" alt="" class="pos-a chartsTitleImg" data-src="http://static.i-lz.cn/chenggan1/themes/defualt/images/chartsTitleImg.png">
+            <img src="" alt="" class="pos-a closeBtnImg" data-src="http://static.i-lz.cn/chenggan1/themes/defualt/images/icon-closeBtnImg.png">
+            <div id="chartsContentDiv" class="pos-a contentDiv">
+                <div id="chartsMoveDiv" class="itemsDiv" style="margin-top: 0px;">
+                    <!-- <div class="itemDiv">
+                        <div>
+                            <img src="http://static.i-lz.cn/chenggan1/themes/defualt/images/medal-1.png" alt="" data-src="">
+                        </div>
+                        <div>
+                            <img src="http://static.i-lz.cn/chenggan1/themes/defualt/images/userImg.png" alt="" data-src="">
+                        </div>
+                        <div>
+                            <p>中意你中意你中意你中意你中意你中意你中意你中意你中意你中意你中意你中意你中意你中意你中意你中意你中意你</p>
+                        </div>
+                        <div>
+                            50
+                        </div>
+                    </div>
+                    <div class="itemDiv">
+                        <div>
+                            <img src="http://static.i-lz.cn/chenggan1/themes/defualt/images/medal-2.png" alt="" data-src="">
+                        </div>
+                        <div>
+                            <img src="http://static.i-lz.cn/chenggan1/themes/defualt/images/userImg.png" alt="" data-src="">
+                        </div>
+                        <div>
+                            <p>中意你</p>
+                        </div>
+                        <div>
+                            50
+                        </div>
+                    </div>
+                    <div class="itemDiv">
+                        <div>
+                            <img src="http://static.i-lz.cn/chenggan1/themes/defualt/images/medal-3.png" alt="" data-src="">
+                        </div>
+                        <div>
+                            <img src="http://static.i-lz.cn/chenggan1/themes/defualt/images/userImg.png" alt="" data-src="">
+                        </div>
+                        <div>
+                            <p>中意你</p>
+                        </div>
+                        <div>
+                            50
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <iframe src="http://whd.i-lz.cn/addons/chenggan/themes/defualt/index.html" width="0px" height="0px"> -->
+    <!-- </iframe> -->
+    <script src="http://static.i-lz.cn/chenggan1/themes/defualt/js/zepto.min.js"></script>
+    <script src="http://static.i-lz.cn/chenggan1/themes/defualt/js/zepto-animation.js"></script>
+    <script src="http://static.i-lz.cn/chenggan1/themes/defualt/js/touch.js"></script>
+    <script src="http://static.i-lz.cn/chenggan1/themes/defualt/js/createjs.min.js"></script>
+    <script src="http://static.i-lz.cn/chenggan1/themes/defualt/js/index.js"></script> 
+    <script type="text/javascript" >
+          //分享的代码
+        	WX_STAT.init({
+        	  	hideToolbar:true,
+        		hideOptionMenu:false,
+        		networkType:"",
+        		title:"太阳百货撑杆啦",
+        		desc: "太阳百货发福利，撑杆啦啦啦啦啦~~~~~~~~~",
+        		img:"",
+        		link:"http://whd.i-lz.cn/pHQLzxByVjzX57h0/game/index?_fromwx=o98Kpt5eEEYki6eP02GKoY8qO6bQ"
+              },
+              { // 分享取消
+        		cancel : function(resp) {
+            		//alert(resp);
+        		},
+        		// 分享失败
+        		fail : function(resp) {
+        			//alert(resp);
+        		},
+        		// 分享成功
+        		ok : function(resp) {
+            		//每天第一次分享
+        			$.ajax({
+    			  		type: 'post',
+    				  	url: '/pHQLzxByVjzX57h0/game/firstShare',
+    				  	dataType: 'json',
+    			  		timeout: 15000,
+    				  	success: function(data){
+    			  			if(data.result_code == 1){
+    			  				alert('恭喜你获得：'+data.result_msg+'次游戏机会');
+    				  		}else{
+    				  			alert(data.result_msg);
+    				  		}
+    				  	},
+    			  		error: function(xhr, type){
+    				    	alert('网络出现异常，请刷新重试！');
+    				  	}
+    				});
+        		}
+        	  },
+        	  {
+        		aid:'12901',
+        		wxid:'o98Kpt5eEEYki6eP02GKoY8qO6bQ',
+        		fromType:1,
+              	fromWxid:'o98Kpt2gLg_RXOtIo6f1LRX3xxNY',
+        		attent:0              }
+            );
+        </script>
+        </body>
+</html>
+
